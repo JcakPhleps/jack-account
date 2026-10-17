@@ -1,0 +1,31 @@
+rules_version = '2';
+// Jack Account — central identity + per-user app data.
+// Paste this into Firebase Console → Firestore → Rules → Publish.
+//
+// Core rule: you can only touch data under YOUR OWN account id.
+// Everything an app stores lives under /dudes/{uid}/... (or add your
+// own /app-name/{uid}/... trees the same way) and is private to {uid}.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+
+    // Public-ish profile. Owner writes; any signed-in account may read
+    // (lets apps show a display name). Tighten to isOwner if you prefer.
+    match /users/{uid} {
+      allow read:  if signedIn();
+      allow write: if isOwner(uid);
+    }
+
+    // Dude's private tree: pairing codes, linked devices, command bus,
+    // meeseeks state — all scoped to the owner only.
+    match /dudes/{uid}/{document=**} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Convention for other apps adopting Jack Account: mirror the above.
+    //   match /ping/{uid}/{document=**}  { allow read, write: if isOwner(uid); }
+    //   match /cribs/{uid}/{document=**} { allow read, write: if isOwner(uid); }
+  }
+}
