@@ -4,147 +4,155 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Jack Account</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <style>
-  :root { color-scheme: dark; }
+  :root {
+    color-scheme: dark;
+    --bg:#0b0c0e; --panel:#101216; --panel2:#0d0f12;
+    --line:#23272f; --line2:#363c47; --fg:#e7e9ee; --dim:#848b99;
+    --accent:#f2663c; --ok:#5ec98a;
+    --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
-    margin: 0; min-height: 100dvh; font-family: ui-rounded, system-ui, -apple-system, sans-serif;
-    color: #f4f6fb; display: grid; place-items: center; padding: 24px;
-    background:
-      radial-gradient(1200px 600px at 20% -10%, #2a5db055, transparent),
-      radial-gradient(1000px 700px at 110% 20%, #7b4bd055, transparent),
-      linear-gradient(160deg, #0b1020, #111a2e);
+    margin: 0; min-height: 100dvh; font-family: var(--mono); color: var(--fg); font-size: 14px;
+    background: var(--bg);
+    background-image:
+      linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+    background-size: 22px 22px;
+    display: grid; place-items: center; padding: 22px;
   }
   .card {
-    width: min(420px, 100%); background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.14); border-radius: 22px;
-    backdrop-filter: blur(22px) saturate(1.3); -webkit-backdrop-filter: blur(22px) saturate(1.3);
-    box-shadow: 0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.18);
-    padding: 26px 24px 22px;
+    width: min(410px, 100%); background: var(--panel); border: 1px solid var(--line2);
+    border-radius: 8px; padding: 20px 18px 16px; box-shadow: 0 0 0 4px rgba(0,0,0,.25);
   }
-  .brand { display:flex; align-items:center; gap:10px; margin-bottom: 4px; }
-  .brand .dot { width:34px; height:34px; border-radius:11px; background:linear-gradient(140deg,#5ea0ff,#a06bff); box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }
-  h1 { font-size: 20px; margin: 0; letter-spacing: .2px; }
-  p.sub { margin: 6px 0 18px; color:#aeb8cc; font-size: 13.5px; }
-  label { display:block; font-size:12px; color:#9fb0c9; margin: 12px 0 5px; }
+  /* terminal title bar */
+  .titlebar { display: flex; align-items: center; gap: 7px; padding-bottom: 14px; margin-bottom: 4px; border-bottom: 1px solid var(--line); color: var(--dim); font-size: 11px; letter-spacing: .5px; }
+  .titlebar .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--line2); }
+  .titlebar .dot.a { background: var(--accent); }
+  .brand { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+  .brand .head { width: 40px; height: 40px; image-rendering: pixelated; background: url("./icons/dude.png") center/contain no-repeat; }
+  h1 { font-size: 18px; margin: 0; letter-spacing: .5px; }
+  p.sub { margin: 10px 0 18px; color: var(--dim); font-size: 12.5px; line-height: 1.55; }
+  label { display: block; font-size: 11px; color: var(--dim); margin: 14px 0 0; text-transform: uppercase; letter-spacing: .7px; }
   input {
-    width:100%; padding: 12px 13px; border-radius: 13px; font-size:15px;
-    background: rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.16); color:#fff; outline:none;
+    width: 100%; padding: 11px 12px; border-radius: 4px; font-size: 16px; margin-top: 6px;
+    background: var(--panel2); border: 1px solid var(--line2); color: var(--fg); outline: none; font-family: var(--mono);
   }
-  input:focus { border-color:#6ea4ff; box-shadow:0 0 0 3px #6ea4ff33; }
+  input::placeholder { color: #5a606d; }
+  input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
   button {
-    width:100%; margin-top:16px; padding: 12px; border:0; border-radius: 13px; cursor:pointer;
-    font-size:15px; font-weight:600; color:#071021;
-    background: linear-gradient(140deg,#78b0ff,#b58cff);
-    box-shadow: 0 8px 22px #6a8bff44, inset 0 1px 0 rgba(255,255,255,.5);
+    width: 100%; margin-top: 18px; padding: 12px; border: 0; border-radius: 4px; cursor: pointer;
+    font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: #0b0c0e; background: var(--accent); font-family: var(--mono);
   }
-  button.ghost { background: rgba(255,255,255,.08); color:#dfe7f5; box-shadow:none; border:1px solid rgba(255,255,255,.16); }
+  button.primary::before { content: "[ "; } button.primary::after { content: " ]"; }
+  button.ghost { background: transparent; color: var(--fg); border: 1px solid var(--line2); text-transform: lowercase; letter-spacing: 0; font-weight: 500; }
   button:active { transform: translateY(1px); }
-  .row { display:flex; gap:10px; }
+  .row { display: flex; gap: 10px; }
   .row button { margin-top: 10px; }
-  .msg { min-height: 18px; margin-top: 12px; font-size: 13px; color:#ff9e9e; text-align:center; }
-  .msg.ok { color:#8fe6b0; }
-  .muted { color:#8092ac; font-size:12.5px; text-align:center; margin-top:14px; }
-  a { color:#8fb8ff; }
-  .signed { text-align:center; }
-  .avatar { width:62px;height:62px;border-radius:20px;margin:6px auto 10px;background:linear-gradient(140deg,#5ea0ff,#a06bff); display:grid;place-items:center; font-size:26px; }
-  .apps { display:grid; gap:8px; margin-top:16px; text-align:left; }
-  .apps a { display:flex; justify-content:space-between; padding:11px 13px; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); text-decoration:none; color:#e7eefb; font-size:14px; }
-  .hidden { display:none; }
-  hr { border:0; border-top:1px solid rgba(255,255,255,.1); margin:18px 0 6px; }
+  .msg { min-height: 18px; margin-top: 12px; font-size: 12px; color: #ff8a7a; text-align: center; }
+  .msg.ok { color: var(--ok); }
+  .muted { color: var(--dim); font-size: 11.5px; text-align: center; margin-top: 14px; }
+  .muted::before { content: "// "; color: var(--accent); }
+  a { color: var(--accent); }
+  .signed { text-align: center; }
+  .head-big { width: 56px; height: 56px; image-rendering: pixelated; margin: 8px auto 10px; background: url("./icons/dude.png") center/contain no-repeat; }
+  .apps { display: grid; gap: 8px; margin-top: 16px; text-align: left; }
+  .apps a { display: flex; justify-content: space-between; padding: 11px 12px; border-radius: 4px; background: var(--panel2); border: 1px solid var(--line2); text-decoration: none; color: var(--fg); font-size: 13px; }
+  .apps a:hover { border-color: var(--accent); }
+  .apps a span { color: var(--accent); }
+  .hidden { display: none; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 18px 0 6px; }
+  .who { font-size: 16px; margin: 0; }
+  .whoSub { color: var(--dim); font-size: 12px; margin: 4px 0 0; }
 </style>
 </head>
 <body>
   <div class="card">
-    <div class="brand"><div class="dot"></div><h1>Jack Account</h1></div>
-    <p class="sub">One account for everything Jack builds.</p>
+    <div class="titlebar"><span class="dot a"></span><span class="dot"></span><span class="dot"></span><span>jack@account — ~/</span></div>
 
-    <!-- Auth form -->
+    <!-- Auth -->
     <div id="authView">
-      <label id="identLabel">Username or email</label>
+      <div class="brand"><div class="head"></div><h1>jack account</h1></div>
+      <p class="sub">one account for everything jack builds.</p>
+
+      <label id="identLabel">username or email</label>
       <input id="ident" autocomplete="username" placeholder="jack" />
-      <label>Password</label>
+      <label>password</label>
       <input id="pass" type="password" autocomplete="current-password" placeholder="••••••••" />
-      <input id="displayName" class="hidden" placeholder="Display name (optional)" />
-      <button id="primaryBtn">Sign in</button>
+      <input id="displayName" class="hidden" placeholder="display name (optional)" />
+      <button id="primaryBtn" class="primary">Sign in</button>
       <div class="row">
-        <button class="ghost" id="googleBtn">Google</button>
-        <button class="ghost" id="toggleBtn">Create account</button>
+        <button id="googleBtn" class="ghost">google</button>
+        <button id="toggleBtn" class="ghost">create account</button>
       </div>
       <div class="msg" id="msg"></div>
-      <div class="muted">New Firebase project not set up yet? See the repo README.</div>
+      <div class="muted">firebase not set up? see the repo readme.</div>
     </div>
 
-    <!-- Signed-in view -->
+    <!-- Signed in -->
     <div id="homeView" class="hidden signed">
-      <div class="avatar" id="avatar">🙂</div>
-      <h1 id="who">—</h1>
-      <p class="sub" id="whoSub">Signed in</p>
+      <div class="head-big"></div>
+      <h1 class="who" id="who">—</h1>
+      <p class="whoSub" id="whoSub">signed in</p>
       <div class="apps">
-        <a href="/dude-mobile/">Dude Mobile <span>→</span></a>
-        <a href="/ping/">Ping <span>→</span></a>
-        <a href="/cribs/">Cribs <span>→</span></a>
+        <a href="/dude-mobile/">dude mobile <span>→</span></a>
+        <a href="/ping/">ping <span>→</span></a>
+        <a href="/cribs/">cribs <span>→</span></a>
       </div>
       <hr/>
-      <button class="ghost" id="signOutBtn">Sign out</button>
+      <button class="ghost" id="signOutBtn">sign out</button>
     </div>
   </div>
 
 <script type="module">
   import { JackAccount } from "./js/jackaccount.js";
-
   const $ = (id) => document.getElementById(id);
-  let mode = "signin"; // or "signup"
-
+  let mode = "signin";
   function setMsg(t, ok=false){ const m=$("msg"); m.textContent=t||""; m.className="msg"+(ok?" ok":""); }
-
   function renderMode() {
     $("primaryBtn").textContent = mode === "signin" ? "Sign in" : "Create account";
-    $("toggleBtn").textContent  = mode === "signin" ? "Create account" : "Have an account?";
+    $("toggleBtn").textContent  = mode === "signin" ? "create account" : "have an account?";
     $("displayName").classList.toggle("hidden", mode !== "signup");
     setMsg("");
   }
-
   $("toggleBtn").onclick = () => { mode = mode === "signin" ? "signup" : "signin"; renderMode(); };
-
   $("primaryBtn").onclick = async () => {
     const id = $("ident").value.trim(), pw = $("pass").value;
-    if (!id || !pw) return setMsg("Enter a username/email and password.");
+    if (!id || !pw) return setMsg("enter a username/email and password.");
     try {
-      setMsg(mode === "signin" ? "Signing in…" : "Creating account…", true);
+      setMsg(mode === "signin" ? "signing in…" : "creating account…", true);
       if (mode === "signin") await JackAccount.signIn(id, pw);
       else await JackAccount.signUp(id, pw, $("displayName").value.trim());
     } catch (e) { setMsg(humanize(e)); }
   };
-
   $("googleBtn").onclick = async () => {
-    try { setMsg("Opening Google…", true); await JackAccount.signInWithGoogle(); }
+    try { setMsg("opening google…", true); await JackAccount.signInWithGoogle(); }
     catch (e) { setMsg(humanize(e)); }
   };
-
   $("signOutBtn").onclick = () => JackAccount.signOut();
-
   JackAccount.onAuthState((user) => {
     if (user) {
       $("authView").classList.add("hidden");
       $("homeView").classList.remove("hidden");
-      $("who").textContent = user.displayName || "Jack";
-      $("whoSub").textContent = user.email?.endsWith("jack.id") ? "@" + user.email.split("@")[0] : (user.email || "Signed in");
-      $("avatar").textContent = (user.displayName || "J").trim()[0].toUpperCase();
+      $("who").textContent = (user.displayName || "jack").toLowerCase();
+      $("whoSub").textContent = user.email?.endsWith("jack.id") ? "@" + user.email.split("@")[0] : (user.email || "signed in");
     } else {
       $("homeView").classList.add("hidden");
       $("authView").classList.remove("hidden");
     }
   });
-
   function humanize(e){
     const c = (e && e.code) || "";
-    if (c.includes("invalid-credential") || c.includes("wrong-password")) return "Wrong username or password.";
-    if (c.includes("email-already-in-use")) return "That account already exists — sign in instead.";
-    if (c.includes("weak-password")) return "Password needs 6+ characters.";
-    if (c.includes("api-key-not-valid") || c.includes("configuration")) return "Firebase not configured yet — see README.";
-    if (c.includes("popup-closed")) return "Google sign-in was cancelled.";
-    return (e && e.message) ? e.message.replace("Firebase: ", "") : "Something went wrong.";
+    if (c.includes("invalid-credential") || c.includes("wrong-password")) return "wrong username or password.";
+    if (c.includes("email-already-in-use")) return "that account already exists — sign in instead.";
+    if (c.includes("weak-password")) return "password needs 6+ characters.";
+    if (c.includes("api-key-not-valid") || c.includes("configuration")) return "firebase not configured yet — see readme.";
+    if (c.includes("popup-closed")) return "google sign-in was cancelled.";
+    return (e && e.message) ? e.message.replace("Firebase: ", "") : "something went wrong.";
   }
   renderMode();
 </script>
